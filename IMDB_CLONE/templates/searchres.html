@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block banner %}
+
+  <div id="index-banner" >
+    <div class="section no-pad-bot">
+      <div class="container">
+       <h2 class="header blue-text">Search results:</h2>
+       <h2> </h2>
+
+      </div>
+    </div>
+ </div>
+{% endblock %}
+
+
+{% block content %}
+   
+        
+  <div class="row">
+
+
+    {% for movie in movie_data.Search %}
+    <div class="col s12 m4">
+      <div class="card blue-grey darken-1">
+        <div class="card-image">
+        
+         <a href="{% url 'moviedescr' movie.imdbID %}"><img src="{{movie.Poster }}"></a>
+       
+          
+        </div> 
+        <div class="card-content">
+            <span class="card-title"> {{ movie.Title }}</span>
+          <span class="right"><i class ="material-icons">date_range</i>{{movie.Year}}</span>
+          <p><b>{{movie.Type}}</b></p>
+        </div>
+       
+      </div>
+    </div>
+
+    {% endfor %}
+   <div class="col s12 m12 center-align">
+        <a href="{% url 'pagination' query page_number %}" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Load more</a>  
+    </div>
+  </div>
+  </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+{% endblock %}

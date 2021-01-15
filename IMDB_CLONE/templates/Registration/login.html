@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class ="row center-align">
+    <form method="post" class ="col s6 offset-s3 z-depth-1" role="form" action="">
+    {% csrf_token %} 
+    <h3>Login</h3>
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.username }}
+        <label for="username"> Username</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.password }}
+        <label for="username"> Password</label>
+        </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row">
+        <div class="col s6 offset-s3 z-depth-1">
+        <span style="color: red; font-weight: bold;"> Your username or password did not match.</span>
+        </div>
+    </div>
+    {% endif %}
+    <button type="submit" value="login" class="waves-light btn"><i class="material-icons left">send</i></button>
+    <input type="hidden" name="next" value="{{ next }}">
+   <!-- <a class="waves-effect waves-light btn"><i class="material-icons left">person_pin</i>Register</a> -->
+    
+
+
+
+
+</form>
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+
+
+
+
+
+
+
+
+{% endblock %}
+

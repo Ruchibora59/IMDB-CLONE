@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class ="row center-align">
+    <form method="post" class ="col s6 offset-s3 z-depth-1" role="form" action="">
+    {% csrf_token %} 
+    <h3>Create an account </h3>
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.username }}
+        <label for="username"> Username</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.email }}
+        <label for="username">Email</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.first_name }}
+        <label for="first_name">First name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.last_name }}
+        <label for="last_name">last name</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.password }}
+        <label for="password">Password</label>
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="input-field col s6 offset-s3 z-depth-1">
+           {{ form.confirm_password }}
+        <label for="confirm_password">Re- Type Password</label>
+        </div>
+    </div>
+    <br>
+    <br>
+
+
+    {% if form.errors %}
+    <div class="row">
+        <div class="col s6 offset-s3 z-depth-1">
+        <span style="color: red; font-weight: bold;">{{form.errors}}</span>
+        </div>
+    </div>
+
+    {% endif %}
+    <button type="submit" name="action" class="waves-light btn"><i class="material-icons left">send</i>Create account</button>
+   </form>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+
+
+
+{% endblock %}
