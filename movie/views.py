@@ -3,9 +3,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.utils.text import slugify
 from django.core.paginator import Paginator
-from movie.models import Movie, Genre, Rating
+from django.urls import reverse
+from django.db.models import Avg
+from movie.models import Movie, Genre, Rating, Review
 from actor.models import Actor
-
+from authy.models import Profile
+from django.contrib.auth.models import User
+from movie.forms import RateForm
 import requests
 
 # Create your views here.
@@ -50,7 +54,20 @@ def pagination(request, query, page_number):
 def movieDetails(request, imdb_id):
     if Movie.objects.filter(imdbID=imdb_id).exists():
         movie_data = Movie.objects.get(imdbID=imdb_id)
+        reviews = Review.objects.filter(movie=movie_data)
+        reviews_avg = reviews.aggregate(Avg('rate'))
+        reviews_count = reviews.count()
         our_db =  True
+
+        context ={
+            'movie_data' : movie_data,
+            'reviews' : reviews,
+            'reviews_avg' : reviews_avg,
+            'reviews_count' : reviews_count,
+            'our_db' : our_db,
+
+        }             
+
     
     else:
         url='http://www.omdbapi.com/?apikey=603c37ac&i=' + imdb_id 
@@ -149,11 +166,12 @@ def movieDetails(request, imdb_id):
         m.save()
         our_db = False
 
-    context = {
-        'movie_data' : movie_data,
-        'our_db' : our_db,
+        context = {
+            'movie_data' : movie_data,
+          
+            'our_db' : our_db,
 
-    }               
+        }               
 
     template = loader.get_template('moviedescr.html')
 
@@ -177,3 +195,66 @@ def genres(request, genre_slug):
     template = loader.get_template('genre.html')
 
     return HttpResponse(template.render(context, request))
+
+
+def addMoviesToWatch(request, imdb_id):
+    movie = Movie.objects.get(imdbID=imdb_id)
+    user = request.user
+    profile = Profile.objects.get(user=user)
+
+    profile.to_watch.add(movie)
+
+    return HttpResponseRedirect(reverse('moviedescr', args=[imdb_id]))
+
+def addMoviesWatched(request, imdb_id):
+    movie = Movie.objects.get(imdbID=imdb_id)
+    user = request.user
+    profile = Profile.objects.get(user=user)
+
+    if profile.to_watch.filter(imdbID=imdb_id).exists():
+        profile.to_watch.remove(movie)
+        profile.watched.add(movie)
+    else:
+        profile.watched.add(movie)
+
+
+
+    return HttpResponseRedirect(reverse('moviedescr', args=[imdb_id]))
+
+
+def Rate(request, imdb_id):
+    movie = Movie.objects.get(imdbID=imdb_id)
+    user = request.user
+
+    if request.method == 'POST':
+        form = RateForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = user
+            rate.movie = movie
+            rate.save()
+            return HttpResponseRedirect(reverse('moviedescr', args=[imdb_id]))
+
+    else:
+        form = RateForm()
+
+    template = loader.get_template('ratings.html')    
+
+    context = {
+         'form' : form,
+         'movie' : movie,
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
+
+
+
+
+
+
+
+
+
+
