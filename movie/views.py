@@ -11,10 +11,15 @@ from authy.models import Profile
 from django.contrib.auth.models import User
 from movie.forms import RateForm
 import requests
+from newmovies.models import Upcoming
 
 # Create your views here.
 
 def index(request):
+    upcome_movies = Upcoming.objects.all()
+    print(upcome_movies)
+    return render(request, 'index.html', {'upcome_movies': upcome_movies})
+
     query = request.GET.get('q')
 
     if query:
@@ -31,8 +36,9 @@ def index(request):
         template = loader.get_template('searchres.html')
 
         return HttpResponse(template.render(context,request))
-    return render(request,'index.html')        
+    return render(request,'index.html')
 
+   
 
 def pagination(request, query, page_number):
     url='http://www.omdbapi.com/?apikey=603c37ac&s=' + query + '&page=' + str(page_number)

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% static "img" as baseUrl %}
 
 {% block banner %}
 <br>
@@ -34,14 +34,43 @@
   <div class ="parallax"><img src="{% static 'img/black.jpg'%}" alt="Unsplashed background img 1"></div>
   </div>
 
+
+<h3> Latest Upcoming Movies </h3>
+
+<div class="container">
+
+ <div class="row">
+ {% for dest in upcome_movies %}
+    <div class="col s12 m4">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{dest.picture.url}}" alt="">
+          <span class="card-title"><b><p style="color:black">{{ dest.name }}</p></b></span>
+        </div>
+        <div class="card-content">
+          <p style="color:black" >Movie: {{ dest.name }}</p><br>
+          <p>{{ dest.description }}</p>
+          <p>Release Date: {{ dest.release_date }}</p>
+        </div>
+       
+    </div>
+  </div>
+  
+
+{% endfor %}  
+
+</div> 
+</div>
+</div>
+
 {% endblock %}
 
 
- {% block content %}
-<br>
-<h3> Latest Upcoming Movies </h3>
+{% block content %}
+ 
 
-    {% endblock %}
+
+{% endblock %}
 
 
 
